@@ -1,0 +1,37 @@
+version: '3'
+services:
+  web:
+    container_name: minha-app-web
+    build:
+      context: ./
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "80:80"
+    links:
+      - database
+# Define o endereço IP fixo para o conteiner
+    #networks:
+    #  lhc-net:
+    #    ipv4_address: 172.26.0.10
+  database:
+      image: mysql:5.6
+      container_name: meu-db
+      volumes:
+        - ./db/mysql:/var/lib/mysql:rw
+# Define o endereço IP fixo para o conteiner
+     # networks:
+     #   lhc-net:
+     #     ipv4_address: 172.26.0.20
+      environment:
+        - MYSQL_ROOT_PASSWORD=mysql2018
+        - MYSQL_USER=meu_usuario
+        - MYSQL_PASSWORD=mysql2018
+        - MYSQL_DATABASE=meu_banco
+# Cria a rede entre os conteiners quando se define um IP fixo para cada um deles
+#networks:
+#  lhc-net:
+#    driver: bridge
+#    ipam:
+#      config:
+#        - subnet: 172.26.0.0/16
